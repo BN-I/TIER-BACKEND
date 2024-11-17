@@ -21,7 +21,7 @@ class SignupController {
         message: "Invalid request",
       });
     }
-
+    console.log(role);
     // Check if role is a valid UserRole
     if (!Object.values(UserRole).includes(role)) {
       return res.status(400).send({
@@ -33,7 +33,7 @@ class SignupController {
     if (!PASSWORD_REGEX.test(password)) {
       return res.status(400).send({
         message:
-          "Password must be between 8 and 20 characters long, and include at least one uppercase letter, one lowercase letter, one digit, and one special character.",
+          "Password must be 8-20 characters long, with at least one uppercase, one lowercase, one digit, and one special character.",
       });
     }
 
@@ -47,10 +47,10 @@ class SignupController {
     try {
       bcrypt.hash(password, saltRounds).then(async function (hash: string) {
         const newUser = await User.create({
-          name: name,
-          email: email,
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
           password: hash,
-          reference: reference,
+          reference: reference.trim(),
           program: program,
           role: role,
         });
