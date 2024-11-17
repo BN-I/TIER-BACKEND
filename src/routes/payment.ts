@@ -4,10 +4,10 @@ import { Request, Response } from "express";
 
 const paymentRouter = require("express").Router();
 paymentRouter.post(
-  "/api/payment",
+  "/api/payment/create-subscription",
   auth,
   async (req: Request, res: Response) => {
-    paymentController.Execute(req, res);
+    paymentController.createSubscription(req, res);
   }
 );
 

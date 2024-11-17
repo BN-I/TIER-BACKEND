@@ -12,8 +12,8 @@ class SignupController {
     const { name, email, password, reference, program, role } = req.body;
     enum UserRole {
       admin = "admin",
-      patient = "patient",
-      clinic = "clinic",
+      patient = "Patient",
+      clinic = "Clinic",
     }
 
     if (!name || !email || !password || !reference || !program || !role) {
