@@ -29,5 +29,7 @@ app.use(require("./routes/credentials"));
 app.use(require("./routes/payment"));
 app.use(require("./routes/clinics"));
 app.use(require("./routes/patients"));
+app.use(require("./routes/programs"));
+app.use(require("./routes/resetPassword"));
 
 export default app;

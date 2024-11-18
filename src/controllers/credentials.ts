@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/user";
-
+import nodemailer from "nodemailer";
+import { transporter } from "../utils/mailer";
 class credentialsController {
   static async Execute(req: Request, res: Response) {
     enum UserRole {
@@ -42,11 +43,22 @@ class credentialsController {
       user.dashboardUsername = dashboardUsername;
       user.dashboardPassword = dashboardPassword;
       await user.save();
-      res.status(200).send({
+
+      const info = await transporter.sendMail({
+        from: process.env.SMTP_USER, // sender address
+        to: user.email, // list of receivers
+        subject: "Credentials Uploaded", // Subject line
+        text: "Your Credentials to dashbaoard have been uploaded on the T.I.E.R App ", // plain text body
+      });
+
+      console.log("Message sent: %s", info.messageId);
+
+      return res.status(200).send({
         message: "Credentials updated successfully",
       });
     } catch (error) {
-      res.status(500).send({
+      console.log(error);
+      return res.status(500).send({
         message: "Error updating credentials",
       });
     }
