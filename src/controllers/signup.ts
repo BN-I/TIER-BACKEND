@@ -11,7 +11,7 @@ class SignupController {
     const saltRounds = 10;
     const { name, email, password, reference, program, role } = req.body;
     enum UserRole {
-      admin = "admin",
+      admin = "Admin",
       patient = "Patient",
       clinic = "Clinic",
     }
