@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import Stripe from "stripe";
 import User from "../models/user";
+import { transporter } from "../utils/mailer";
 
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 
@@ -9,7 +10,7 @@ if (!stripeSecretKey) {
 }
 
 const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2024-10-28.acacia", 
+  apiVersion: "2024-10-28.acacia",
 });
 
 class paymentController {
@@ -51,10 +52,18 @@ class paymentController {
       if (latestInvoice && typeof latestInvoice !== "string") {
         const paymentIntent = latestInvoice.payment_intent;
         if (paymentIntent && typeof paymentIntent !== "string") {
-          return res.status(200).send({
+          res.status(200).send({
             subscriptionId: subscription.id,
             clientSecret: paymentIntent.client_secret,
           });
+
+          await transporter.sendMail({
+            from: process.env.SMTP_USER, // sender address
+            to: process.env.SMTP_USER, // list of receivers
+            subject: `New ${customerType} payment has been recieved.`, // Subject line
+            text: `New ${customerType} payment has been recieved. ${user.name} is waiting for credentials.`, // plain text body
+          });
+          return;
         }
       }
 

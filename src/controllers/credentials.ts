@@ -44,14 +44,12 @@ class credentialsController {
       user.dashboardPassword = dashboardPassword;
       await user.save();
 
-      const info = await transporter.sendMail({
+      await transporter.sendMail({
         from: process.env.SMTP_USER, // sender address
         to: user.email, // list of receivers
         subject: "Credentials Uploaded", // Subject line
         text: "Your Credentials to dashbaoard have been uploaded on the T.I.E.R App ", // plain text body
       });
-
-      console.log("Message sent: %s", info.messageId);
 
       return res.status(200).send({
         message: "Credentials updated successfully",

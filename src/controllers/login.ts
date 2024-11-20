@@ -16,7 +16,7 @@ class LoginController {
     }
 
     try {
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ email: email.trim().toLowerCase() });
 
       if (!user) {
         res.status(400).json({
@@ -36,7 +36,7 @@ class LoginController {
 
         // Create a new JWT token for the user
         const userWithoutPassword = user.toJSON(); // Converts Sequelize model instance to plain object
-
+        delete userWithoutPassword.password;
         jwt.sign(
           { user: userWithoutPassword },
           process.env.JWT_SECRET,
@@ -48,7 +48,6 @@ class LoginController {
               });
             }
 
-            delete userWithoutPassword.password;
             userWithoutPassword.token = token;
 
             res.status(200).json({
