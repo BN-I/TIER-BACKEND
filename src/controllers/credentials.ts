@@ -5,9 +5,9 @@ import { transporter } from "../utils/mailer";
 class credentialsController {
   static async Execute(req: Request, res: Response) {
     enum UserRole {
-      admin = "admin",
-      patient = "patient",
-      clinic = "clinic",
+      admin = "Admin",
+      patient = "Patient",
+      clinic = "Clinic",
     }
     const { id, dashboardUsername, dashboardPassword } = req.body;
     if (!id || !dashboardUsername || !dashboardPassword) {
