@@ -57,6 +57,10 @@ class paymentController {
             clientSecret: paymentIntent.client_secret,
           });
 
+          user.amountPaid = latestInvoice.total / 100;
+
+          await user.save();
+
           await transporter.sendMail({
             from: process.env.SMTP_USER, // sender address
             to: process.env.SMTP_USER, // list of receivers
