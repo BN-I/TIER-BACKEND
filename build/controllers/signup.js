@@ -58,7 +58,6 @@ class SignupController {
           message: "Invalid request",
         });
       }
-      console.log(role);
       // Check if role is a valid UserRole
       if (!Object.values(UserRole).includes(role)) {
         return res.status(400).send({

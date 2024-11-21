@@ -5,7 +5,7 @@ import { UserObject } from "../types";
 class clinicsController {
   static async Execute(req: Request, res: Response) {
     try {
-      User.find({ role: "clinic" }).then((users: UserObject) => {
+      User.find({ role: "Clinic" }).then((users: UserObject) => {
         res.status(200).send(users);
       });
     } catch (error) {

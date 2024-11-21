@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/user";
 import bcrypt from "bcrypt";
 import { UserObject } from "../types";
+import { transporter } from "../utils/mailer";
 
 class SignupController {
   static async Execute(req: Request, res: Response) {
@@ -21,7 +22,6 @@ class SignupController {
         message: "Invalid request",
       });
     }
-    console.log(role);
     // Check if role is a valid UserRole
     if (!Object.values(UserRole).includes(role)) {
       return res.status(400).send({
@@ -62,6 +62,17 @@ class SignupController {
           message: "User created successfully",
           user: userWithoutPassword,
         });
+
+        if (userWithoutPassword.role !== "Admin") {
+          await transporter.sendMail({
+            from: process.env.SMTP_USER, // sender address
+            to: userWithoutPassword.email, // list of receivers
+            subject: "Welcome to T.I.E.R", // Subject line
+            text: "Welcome to BOOST THE YOUTH - TIER. You can now get your dashboard credentials from app after completing the payment.", // plain text body
+          });
+        }
+
+        return;
       });
     } catch (error) {
       res.status(500).send({
