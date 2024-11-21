@@ -7,7 +7,6 @@ import jwt from "jsonwebtoken";
 class LoginController {
   static async Execute(req: Request, res: Response) {
     const { email, password } = req.body;
-    console.log("here");
     if (!email || !password) {
       res.status(400).send({
         message: "Invalid request",
